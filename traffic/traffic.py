@@ -58,7 +58,28 @@ def load_data(data_dir):
     be a list of integer labels, representing the categories for each of the
     corresponding `images`.
     """
-    raise NotImplementedError
+    images = []
+    labels = []
+    # The required shape for our image data
+    shape = (IMG_WIDTH, IMG_HEIGHT, 3)
+
+    # Read data from each subdirectory
+    for subdirectory in range(NUM_CATEGORIES - 1):
+        subdirectory_path = os.path.join(data_dir, str(subdirectory))
+        for file in os.listdir(subdirectory_path):
+            # Convert image data into numpy ndarray and populate list of images
+            img = cv2.imread(os.path.join(subdirectory_path, file))
+            # Resize to the required shape for the analysis
+            img.resize(shape)
+            # Populate list of images
+            images.append(img)
+            # Populate list of labels
+            labels.append(subdirectory)
+
+    # Return tuple
+    return (images, labels)
+
+    # raise NotImplementedError
 
 
 def get_model():
