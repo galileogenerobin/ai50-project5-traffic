@@ -66,7 +66,7 @@ def load_data(data_dir):
     shape = (IMG_WIDTH, IMG_HEIGHT, 3)
 
     # Read data from each subdirectory
-    for subdirectory in range(NUM_CATEGORIES - 1):
+    for subdirectory in range(NUM_CATEGORIES):
         subdirectory_path = os.path.join(data_dir, str(subdirectory))
         for file in os.listdir(subdirectory_path):
             # Convert image data into numpy ndarray and populate list of images
