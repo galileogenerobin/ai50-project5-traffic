@@ -9,7 +9,9 @@ from sklearn.model_selection import train_test_split
 EPOCHS = 10
 IMG_WIDTH = 30
 IMG_HEIGHT = 30
-NUM_CATEGORIES = 43
+# NUM_CATEGORIES = 43
+# Testing with smaller dataset
+NUM_CATEGORIES = 3
 TEST_SIZE = 0.4
 
 
@@ -88,7 +90,46 @@ def get_model():
     `input_shape` of the first layer is `(IMG_WIDTH, IMG_HEIGHT, 3)`.
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
-    raise NotImplementedError
+    # Experimentation variables
+    conv2d_filters = 32
+    conv2d_size = (3, 3)
+    pool_layer_size = (2, 2)
+    hidden_layer_size = 128
+    dropout_value = 0.5
+    shape = (IMG_WIDTH, IMG_HEIGHT, 3)
+
+    # Create a new neural network model
+    model = tf.keras.models.Sequential([
+        # Input layer
+        tf.keras.layers.Conv2D(
+            conv2d_filters, conv2d_size, activation="relu", input_shape=shape
+        ),
+
+        # Max-pooling layer
+        tf.keras.layers.MaxPooling2D(pool_size=pool_layer_size),
+
+        # Flatten
+        tf.keras.layers.Flatten(),
+
+        # Hidden layer
+        tf.keras.layers.Dense(hidden_layer_size, activation="relu"),
+
+        # Dropout
+        tf.keras.layers.Dropout(dropout_value),
+
+        # Output layer
+        tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
+    ])
+
+    # Compile model
+    model.compile(
+        optimizer="adam",
+        loss="categorical_crossentropy",
+        metrics=["accuracy"]
+    )
+
+    return model
+    # raise NotImplementedError
 
 
 if __name__ == "__main__":
