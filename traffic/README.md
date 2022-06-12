@@ -17,9 +17,9 @@ Next, I tested the combined best parameters above and discovered that although t
 
 ## Final model results (after running tests described in the next section below) ##
 (Conv2D 32, 3x3; MaxPool 2x2) x 2; hidden layer 256; dropout 0.5:
-    i. Training accuracy: 0.9730, 0.9736, 0.9735 (0.9734)
-    ii. Testing accuracy: 0.9858, 0.9886, 0.9863 (0.9869)
-    iii. Time: 42-45s/step, 38-41s/step, 41-42/step
+    a. Training accuracy: 0.9730, 0.9736, 0.9735 (0.9734)
+    b. Testing accuracy: 0.9858, 0.9886, 0.9863 (0.9869)
+    c. Time: 42-45s/step, 38-41s/step, 41-42/step
 
 
 ## Documenting test results for changing the neural network model:
