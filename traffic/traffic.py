@@ -9,9 +9,7 @@ from sklearn.model_selection import train_test_split
 EPOCHS = 10
 IMG_WIDTH = 30
 IMG_HEIGHT = 30
-# NUM_CATEGORIES = 43
-# Testing with smaller dataset
-NUM_CATEGORIES = 3
+NUM_CATEGORIES = 43
 TEST_SIZE = 0.4
 
 
@@ -63,16 +61,16 @@ def load_data(data_dir):
     images = []
     labels = []
     # The required shape for our image data
-    shape = (IMG_WIDTH, IMG_HEIGHT, 3)
+    shape = (IMG_WIDTH, IMG_HEIGHT)
 
     # Read data from each subdirectory
     for subdirectory in range(NUM_CATEGORIES):
         subdirectory_path = os.path.join(data_dir, str(subdirectory))
         for file in os.listdir(subdirectory_path):
-            # Convert image data into numpy ndarray and populate list of images
+            # Convert image data into numpy ndarray
             img = cv2.imread(os.path.join(subdirectory_path, file))
             # Resize to the required shape for the analysis
-            img.resize(shape)
+            img = cv2.resize(img/255, shape)
             # Populate list of images
             images.append(img)
             # Populate list of labels
@@ -80,7 +78,6 @@ def load_data(data_dir):
 
     # Return tuple
     return (images, labels)
-
     # raise NotImplementedError
 
 
@@ -94,25 +91,42 @@ def get_model():
     conv2d_filters = 32
     conv2d_size = (3, 3)
     pool_layer_size = (2, 2)
-    hidden_layer_size = 128
+    hidden_layer_size = 256
     dropout_value = 0.5
     shape = (IMG_WIDTH, IMG_HEIGHT, 3)
 
     # Create a new neural network model
     model = tf.keras.models.Sequential([
-        # Input layer
+        # Conv2D layer
         tf.keras.layers.Conv2D(
             conv2d_filters, conv2d_size, activation="relu", input_shape=shape
         ),
-
         # Max-pooling layer
         tf.keras.layers.MaxPooling2D(pool_size=pool_layer_size),
+        
+        # Conv2D layer
+        tf.keras.layers.Conv2D(
+            conv2d_filters, conv2d_size, activation="relu"
+        ),
+        # Max-pooling layer
+        tf.keras.layers.MaxPooling2D(pool_size=pool_layer_size),
+    
+        # # Conv2D layer
+        # tf.keras.layers.Conv2D(
+        #     conv2d_filters, conv2d_size, activation="relu"
+        # ),
+        # # Max-pooling layer
+        # tf.keras.layers.MaxPooling2D(pool_size=pool_layer_size),
 
         # Flatten
         tf.keras.layers.Flatten(),
 
-        # Hidden layer
+        # Hidden layer(s)
         tf.keras.layers.Dense(hidden_layer_size, activation="relu"),
+        # tf.keras.layers.Dense(hidden_layer_size, activation="relu"),
+        # tf.keras.layers.Dense(hidden_layer_size, activation="relu"),
+        # tf.keras.layers.Dense(hidden_layer_size, activation="relu"),
+        # tf.keras.layers.Dense(hidden_layer_size, activation="relu"),
 
         # Dropout
         tf.keras.layers.Dropout(dropout_value),
@@ -127,6 +141,8 @@ def get_model():
         loss="categorical_crossentropy",
         metrics=["accuracy"]
     )
+
+    print(model.summary())
 
     return model
     # raise NotImplementedError
