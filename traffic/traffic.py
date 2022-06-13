@@ -142,7 +142,7 @@ def get_model():
         metrics=["accuracy"]
     )
 
-    print(model.summary())
+    # print(model.summary())
 
     return model
     # raise NotImplementedError
